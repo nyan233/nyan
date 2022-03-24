@@ -8,5 +8,6 @@ import (
 type PaserHttpFunc func(req Request)
 
 type IHttpPaser interface {
+	//解析
 	PaserHttp(read bufio.Reader, funcs PaserHttpFunc)
 }
