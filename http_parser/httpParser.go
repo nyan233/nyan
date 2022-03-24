@@ -8,14 +8,13 @@ import (
 )
 
 type httpPaser struct {
-	//减少gc 复用对象
-	HttpContial sync.Pool
+	ReqPool sync.Pool
 }
 
 func NewHttpPaser() IHttpPaser {
 	obj := httpPaser{}
 
-	obj.HttpContial = sync.Pool{
+	obj.ReqPool = sync.Pool{
 		New: func() interface{} { return Request{} },
 	}
 
@@ -25,7 +24,7 @@ func NewHttpPaser() IHttpPaser {
 //序列化http协议
 func (H httpPaser) PaserHttp(read bufio.Reader, funcs PaserHttpFunc) {
 
-	req := H.HttpContial.Get().(Request)
+	req := H.ReqPool.Get().(Request)
 
 	for {
 		body, err := read.ReadString('\n')
